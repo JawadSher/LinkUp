@@ -28,7 +28,7 @@ const userSchema = new Schema({
         type: String,
         default: ""
     },
-    coverImage: {
+    bannerImage: {
         type: String,
         default: ""
     },
