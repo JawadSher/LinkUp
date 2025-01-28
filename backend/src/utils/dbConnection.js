@@ -1,5 +1,5 @@
-import mongoose from "mongoose"
-import { ApiError } from "./ApiError.js"
+import mongoose from "mongoose";
+import { ApiError } from "./ApiError.js";
 
 const dbConnect = async () => {
     try{
@@ -15,6 +15,7 @@ const dbConnect = async () => {
         throw new ApiError(
             500, "DB connection failed", error
         )
+        process.exit(1);
     }
 }
 
