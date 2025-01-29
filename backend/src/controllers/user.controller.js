@@ -19,6 +19,14 @@ export const generateAccessAndRefreshToken = async (user) =>{
     }
 }
 
+const options = {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000,
+    sameSite: 'strict', 
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+}
+
 export const RegisterUser = asyncHandler( async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
@@ -71,18 +79,12 @@ export const loginUser = asyncHandler( async (req, res) => {
     }
 
     const user = await User.findOne({email});
-
     if(!user || !(await user.isPasswordCorrect(password))){
         throw new ApiError(401, "Invalid Credentails")
     }
 
     const {accessToken, refreshToken} = await generateAccessAndRefreshToken(user);
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
-
-    const options = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-    }
 
     return res
     .status(200)
@@ -96,5 +98,27 @@ export const loginUser = asyncHandler( async (req, res) => {
             },
             "User logged in successfully"
         )
+    )
+})
+
+export const logout = asyncHandler (async (req, res) => {
+    User.findByIdAndUpdate(
+        req._id,
+        {
+            $unset: {
+                refreshToken: 1
+            }
+        },
+        {
+            new: true
+        }
+    )
+
+    return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(
+        new ApiReponse(200, {}, "User logged out")
     )
 })
