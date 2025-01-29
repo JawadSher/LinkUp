@@ -1,7 +1,6 @@
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User }  from "../models/user.model.js";
-import { defaultAvatar } from "../constants/index.js";
 import { uploadtoCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
@@ -28,6 +27,9 @@ const options = {
 }
 
 export const registerUser = asyncHandler( async (req, res) => {
+
+    console.log("Received Files: ", req.files); // Log uploaded files
+
     const { firstName, lastName, email, password } = req.body;
 
     if(
@@ -41,25 +43,22 @@ export const registerUser = asyncHandler( async (req, res) => {
         throw new ApiError(409, "The user with this email is already exist")
     }
 
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const bannerImageLocalPath = req.files?.bannerImage[0]?.path;
+    const avatarLocalPath = req.files?.avatar?.[0]?.path || null;
+    const bannerImageLocalPath = req.files?.bannerImage?.[0]?.path || null;
 
-    if(!avatarLocalPath) avatarLocalPath = defaultAvatar.avatar;
-    if(!bannerImageLocalPath) bannerImageLocalPath = "";
-
-    const avatar = await uploadtoCloudinary(avatarLocalPath);
-    const bannerImage = await uploadtoCloudinary(bannerImageLocalPath);
+    const avatar = avatarLocalPath ? await uploadtoCloudinary(avatarLocalPath) : null;
+    const bannerImage =  bannerImageLocalPath ? await uploadtoCloudinary(bannerImageLocalPath) : null;
 
     const user = await User.create({
         firstName,
         lastName,
         email,
         password,
-        avatar: avatar.secure_url,
-        bannerImage: bannerImage.secure_url,
+        avatar: avatar?.secure_url || "",
+        bannerImage: bannerImage?.secure_url || "",
     })
 
-    const createdUser = await User.findOne(user._id).select("-password -refreshToken");
+    const createdUser = await User.findById(user._id).select("-password -refreshToken");
 
     if(!createdUser){
         throw new ApiError(500, "Something went wrong while registering the user")

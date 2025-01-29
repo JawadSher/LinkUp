@@ -1,4 +1,4 @@
 
-export const defaultAvatar = {
-    avatar: "../public/avatar.jpg"
+export const constants  = {
+    
 }
