@@ -4,7 +4,7 @@ import { User }  from "../models/user.model.js";
 import { uploadtoCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-export const generateAccessAndRefreshToken = async (user) =>{
+const generateAccessAndRefreshToken = async (user) =>{
     try {
         const accessToken = await user.generateAccessToken();
         const refreshToken = await user.generateRefreshToken();
@@ -14,6 +14,7 @@ export const generateAccessAndRefreshToken = async (user) =>{
 
         return {accessToken, refreshToken};
     } catch (error) {
+        console.log(error);
         throw new ApiError(500, "Something went wrong while generating Access and Refresh Token")
     }
 }
@@ -27,9 +28,6 @@ const options = {
 }
 
 export const registerUser = asyncHandler( async (req, res) => {
-
-    console.log("Received Files: ", req.files); // Log uploaded files
-
     const { firstName, lastName, email, password } = req.body;
 
     if(
@@ -77,7 +75,7 @@ export const loginUser = asyncHandler( async (req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({email: email});
     if(!user || !(await user.isPasswordCorrect(password))){
         throw new ApiError(401, "Invalid Credentails")
     }
@@ -87,8 +85,8 @@ export const loginUser = asyncHandler( async (req, res) => {
 
     return res
     .status(200)
-    .cookie("AccessToken", accessToken, options)
-    .cookie("RefreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
     .json(
         new ApiResponse(
             200,
@@ -101,8 +99,8 @@ export const loginUser = asyncHandler( async (req, res) => {
 })
 
 export const logoutUser = asyncHandler (async (req, res) => {
-    User.findByIdAndUpdate(
-        req._id,
+    await User.findByIdAndUpdate(
+        req.user._id,
         {
             $unset: {
                 refreshToken: 1
