@@ -3,7 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { User }  from "../models/user.model.js";
 import { defaultAvatar } from "../constants/index.js";
 import { uploadtoCloudinary } from "../utils/cloudinary.js";
-import { ApiReponse } from "../utils/ApiResponse.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 export const generateAccessAndRefreshToken = async (user) =>{
     try {
@@ -27,7 +27,7 @@ const options = {
     path: '/',
 }
 
-export const RegisterUser = asyncHandler( async (req, res) => {
+export const registerUser = asyncHandler( async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
 
     if(
@@ -66,7 +66,7 @@ export const RegisterUser = asyncHandler( async (req, res) => {
     }
 
     return res.status(201).json(
-        new ApiReponse(200, createdUser, "User registerd successfully")
+        new ApiResponse(200, createdUser, "User registerd successfully")
     )
 })
 
@@ -91,7 +91,7 @@ export const loginUser = asyncHandler( async (req, res) => {
     .cookie("AccessToken", accessToken, options)
     .cookie("RefreshToken", refreshToken, options)
     .json(
-        new ApiReponse(
+        new ApiResponse(
             200,
             {
                 user: loggedInUser, accessToken, refreshToken
@@ -101,7 +101,7 @@ export const loginUser = asyncHandler( async (req, res) => {
     )
 })
 
-export const logout = asyncHandler (async (req, res) => {
+export const logoutUser = asyncHandler (async (req, res) => {
     User.findByIdAndUpdate(
         req._id,
         {
@@ -119,6 +119,6 @@ export const logout = asyncHandler (async (req, res) => {
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(
-        new ApiReponse(200, {}, "User logged out")
+        new ApiResponse(200, {}, "User logged out")
     )
 })
