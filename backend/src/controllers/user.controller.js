@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { User }  from "../models/user.model.js";
-import { uploadtoCloudinary } from "../utils/cloudinary.js";
+import { deleteFromCloudinary, uploadtoCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 
@@ -149,5 +149,146 @@ export const refreshAccessToken = asyncHandler (async (req, res) => {
     } catch (error) {
         throw new ApiError(401, error?.message || "Invalid refresh token")
     }
+})
+
+export const updatePassword = asyncHandler (async (req, res) => {
+    const {oldPassword, newPassword} = req.body;
+
+    if(!oldPassword || !newPassword){
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const user = await User.findById(req.user?._id);
+
+    const isPasswordCorrect = user.isPasswordCorrect(oldPassword);
+
+    if(!isPasswordCorrect){
+        throw new ApiError(400, "Old password is invalid")
+    }
+
+    user.password = newPassword;
+    await user.save({ validateBeforeSave: false});
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, {}, "Password updated successfully")
+    )
+})
+
+export const updateAccount = asyncHandler (async (req, res) => {
+    const {firstName, lastName, email, password} = req.body;
+
+    if(!firstName || !lastName || !email || !password){
+        throw new ApiError(400, "All fields are required")
+    }
+
+    const isPasswordCorrect = await req.user.isPasswordCorrect(password);
+
+    if(!isPasswordCorrect){
+        throw new ApiError("400", "Invalid password")
+    }
+
+    const user = await User.findByIdAndUpdate(
+        req.user._id,
+        {
+            $set:{
+                firstName,
+                lastName,
+                email,
+            }
+        },
+        {new: true}
+    ).select("-password -refreshToken")
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user, "Account details updated successfully")
+    )
+})
+
+export const updateAvatar = asyncHandler (async (req, res) => {
+    const newAvatarLocalPath = req.file.path;
+
+    if(!newAvatarLocalPath){
+        throw new ApiError(400, "Avatar file is missing")
+    }
+
+    const oldAvatar = req.user?.avatar;
+    const newAvatar = await uploadtoCloudinary(newAvatarLocalPath);
+
+    if(!newAvatar.secure_url){
+        throw new ApiError(400, "Error while uploading avatar")
+    }
+
+    await deleteFromCloudinary(oldAvatar);
+
+    const user = await User.findById(
+        req.user?._id,
+        {
+            $set:{
+                avatar: newAvatar.secure_url
+            }
+        },
+        {
+            new: true
+        }
+    ).select("-password -refreshToken")
+
+    await user.save({ validateBeforeSave: false });
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user, "Avatar updated successfully")
+    )
+})
+
+export const updateBannerImage = asyncHandler (async (req, res) => {
+    const newBannerLocalPath = req.file.path;
+
+    if(!newBannerLocalPath){
+        throw new ApiError(400, "Banner image file is missing")
+    }
+
+    const oldBannerImage = req.user?.bannerImage;
+    const newBannerImage = await uploadtoCloudinary(newBannerLocalPath);
+
+    if(!newBannerImage.secure_url){
+        throw new ApiError(400, "Error while uploading banner image")
+    }
+
+    await deleteFromCloudinary(oldBannerImage);
+
+    const user = await User.findById(
+        req.user?._id,
+        {
+            $set:{
+                avatar: newBannerImage.secure_url
+            }
+        },
+        {
+            new: true
+        }
+    ).select("-password -refreshToken")
+
+    await user.save({ validateBeforeSave: false });
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user, "Banner image updated successfully")
+    )
+})
+
+export const getCurrentUser = asyncHandler (async (req, res) => {
+    const user = req.user;
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user, "User fetched successfully")
+    )
 })
 

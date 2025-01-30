@@ -1,6 +1,7 @@
 import {v2 as cloudinary} from "cloudinary";
 import fs from "fs"
 import dotenv from "dotenv";
+import { ApiError } from "./ApiError";
 dotenv.config();
 
 cloudinary.config({
@@ -29,4 +30,21 @@ const uploadtoCloudinary = async (fileLocalPath) => {
     }
 }
 
-export {uploadtoCloudinary};
+const deleteFromCloudinary = async (imageURL) => {
+    try {
+        const urlParts = imageURL.split('/');
+        const fileName = urlParts[urlParts.length - 1];
+        const publicID = fileName.split('.')[0];
+
+        await cloudinary.uploader.destroy(publicID);
+        return res
+        .status(200, "Image deleted successfully from cloudinary")
+    } catch (error) {
+        throw new ApiError(400, "Something went wrong while deleting the image from cloudinary")
+    }
+}
+
+export { 
+    uploadtoCloudinary, 
+    deleteFromCloudinary 
+};
