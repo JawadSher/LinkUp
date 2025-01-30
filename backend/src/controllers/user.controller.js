@@ -222,7 +222,7 @@ export const updateAvatar = asyncHandler (async (req, res) => {
         throw new ApiError(400, "Error while uploading avatar")
     }
 
-    await deleteFromCloudinary(oldAvatar);
+    if(oldAvatar != "") await deleteFromCloudinary(oldAvatar);
 
     const user = await User.findById(
         req.user?._id,
@@ -259,7 +259,7 @@ export const updateBannerImage = asyncHandler (async (req, res) => {
         throw new ApiError(400, "Error while uploading banner image")
     }
 
-    await deleteFromCloudinary(oldBannerImage);
+    if(oldBannerImage != "" ) await deleteFromCloudinary(oldBannerImage);
 
     const user = await User.findById(
         req.user?._id,
