@@ -29,10 +29,10 @@ const options = {
 }
 
 export const registerUser = asyncHandler( async (req, res) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, channelName, password } = req.body;
 
     if(
-        [firstName, lastName, email, password].some((field) => field?.trim() === "")
+        [firstName, lastName, email, channelName, password].some((field) => field?.trim() === "")
     ){
         throw new ApiError(400, "All fields are required")
     }
@@ -52,6 +52,7 @@ export const registerUser = asyncHandler( async (req, res) => {
         firstName,
         lastName,
         email,
+        channelName,
         password,
         avatar: avatar?.secure_url || "",
         bannerImage: bannerImage?.secure_url || "",
@@ -177,9 +178,9 @@ export const updatePassword = asyncHandler (async (req, res) => {
 })
 
 export const updateAccount = asyncHandler (async (req, res) => {
-    const {firstName, lastName, email, password} = req.body;
+    const {firstName, lastName, email, channelName, password} = req.body;
 
-    if(!firstName || !lastName || !email || !password){
+    if(!firstName || !lastName || !email || !channelName || !password){
         throw new ApiError(400, "All fields are required")
     }
 
@@ -197,6 +198,7 @@ export const updateAccount = asyncHandler (async (req, res) => {
                 firstName,
                 lastName,
                 email,
+                channelName,
             }
         },
         {new: true}
@@ -305,4 +307,12 @@ export const getCurrentUser = asyncHandler (async (req, res) => {
     .json(
         new ApiResponse(200, user, "User fetched successfully")
     )
+})
+
+export const getUserChannelProfile = asyncHandler (async (req, res) => {
+    try{
+
+    }catch(){
+
+    }
 })

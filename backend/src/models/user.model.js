@@ -23,7 +23,12 @@ const userSchema = new Schema({
             },
             message: props => `${props.value} is not a valid email address!`
         }
-    },    
+    },
+    channelName: {
+        type: String,
+        required: [true, "Channel name is required"],
+        maxLength: 30
+    }, 
     avatar: {
         type: String,
         default: ""
