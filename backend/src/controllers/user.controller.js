@@ -114,8 +114,8 @@ export const logoutUser = asyncHandler (async (req, res) => {
 
     return res
     .status(200)
-    .clearCookie("accessToken", options)
-    .clearCookie("refreshToken", options)
+    .clearCookie("accessToken")
+    .clearCookie("refreshToken")
     .json(
         new ApiResponse(200, {}, "User logged out")
     )
@@ -142,7 +142,7 @@ export const refreshAccessToken = asyncHandler (async (req, res) => {
         return res
         .status(200)
         .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
+        .cookie("refreshToken", newRefreshToken, options)
         .json(
             new ApiResponse(200, {accessToken, refreshToken: newRefreshToken}, "Access token refreshed")
         )
@@ -183,13 +183,14 @@ export const updateAccount = asyncHandler (async (req, res) => {
         throw new ApiError(400, "All fields are required")
     }
 
-    const isPasswordCorrect = await req.user.isPasswordCorrect(password);
-
+    const user = await User.findById(req.user._id);
+    const isPasswordCorrect = await user.isPasswordCorrect(password);
+    
     if(!isPasswordCorrect){
         throw new ApiError("400", "Invalid password")
     }
 
-    const user = await User.findByIdAndUpdate(
+    const newUser = await User.findByIdAndUpdate(
         req.user._id,
         {
             $set:{
@@ -204,7 +205,7 @@ export const updateAccount = asyncHandler (async (req, res) => {
     return res
     .status(200)
     .json(
-        new ApiResponse(200, user, "Account details updated successfully")
+        new ApiResponse(200, newUser, "Account details updated successfully")
     )
 })
 
@@ -222,9 +223,7 @@ export const updateAvatar = asyncHandler (async (req, res) => {
         throw new ApiError(400, "Error while uploading avatar")
     }
 
-    if(oldAvatar != "") await deleteFromCloudinary(oldAvatar);
-
-    const user = await User.findById(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
@@ -237,6 +236,15 @@ export const updateAvatar = asyncHandler (async (req, res) => {
     ).select("-password -refreshToken")
 
     await user.save({ validateBeforeSave: false });
+
+    if (oldAvatar != "") {
+        try {
+            const deleteResponse = await deleteFromCloudinary(oldAvatar);
+            console.log(deleteResponse.message);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
     return res
     .status(200)
@@ -259,13 +267,11 @@ export const updateBannerImage = asyncHandler (async (req, res) => {
         throw new ApiError(400, "Error while uploading banner image")
     }
 
-    if(oldBannerImage != "" ) await deleteFromCloudinary(oldBannerImage);
-
-    const user = await User.findById(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
         {
             $set:{
-                avatar: newBannerImage.secure_url
+                bannerImage: newBannerImage.secure_url
             }
         },
         {
@@ -274,6 +280,15 @@ export const updateBannerImage = asyncHandler (async (req, res) => {
     ).select("-password -refreshToken")
 
     await user.save({ validateBeforeSave: false });
+
+    if (oldBannerImage != "") {
+        try {
+            const deleteResponse = await deleteFromCloudinary(oldBannerImage);
+            console.log(deleteResponse.message);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
     return res
     .status(200)
@@ -291,4 +306,3 @@ export const getCurrentUser = asyncHandler (async (req, res) => {
         new ApiResponse(200, user, "User fetched successfully")
     )
 })
-

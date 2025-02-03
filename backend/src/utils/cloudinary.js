@@ -2,6 +2,7 @@ import {v2 as cloudinary} from "cloudinary";
 import fs from "fs"
 import dotenv from "dotenv";
 import { ApiError } from "./ApiError.js";
+import { ApiResponse } from "./ApiResponse.js";
 dotenv.config();
 
 cloudinary.config({
@@ -36,11 +37,15 @@ const deleteFromCloudinary = async (imageURL) => {
         const fileName = urlParts[urlParts.length - 1];
         const publicID = fileName.split('.')[0];
 
-        await cloudinary.uploader.destroy(publicID);
-        return res
-        .status(200, "Image deleted successfully from cloudinary")
+        const result = await cloudinary.uploader.destroy(publicID);
+
+        if (result.result !== 'ok') {
+            throw new Error(`Failed to delete image with public ID ${publicID}`);
+        }
+
+        return { status: 200, message: "Image deleted from cloudinary successfully"}
     } catch (error) {
-        throw new ApiError(400, "Something went wrong while deleting the image from cloudinary")
+        throw new ApiError(400, error?.message)
     }
 }
 

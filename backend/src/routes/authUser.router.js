@@ -31,7 +31,7 @@ router.route("/logout").post(verifyJWT, logoutUser);
 router.route("/refesh-access-token").post(refreshAccessToken);
 router.route("/update-password").post(verifyJWT, updatePassword);
 router.route("/update-account-details").patch(verifyJWT, updateAccount);
-router.route("/update-avatar").patch(verifyJWT, upload.single('avatar'), updateAvatar);
+router.route("/update-avatar").patch(verifyJWT, upload.single("avatar"), updateAvatar);
 router.route("/update-bannerImage").patch(verifyJWT, upload.single('bannerImage'), updateBannerImage);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 
