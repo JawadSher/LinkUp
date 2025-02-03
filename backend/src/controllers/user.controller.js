@@ -52,7 +52,7 @@ export const registerUser = asyncHandler( async (req, res) => {
         firstName,
         lastName,
         email,
-        channelName,
+        channelName: "@" + channelName,
         password,
         avatar: avatar?.secure_url || "",
         bannerImage: bannerImage?.secure_url || "",
@@ -311,8 +311,126 @@ export const getCurrentUser = asyncHandler (async (req, res) => {
 
 export const getUserChannelProfile = asyncHandler (async (req, res) => {
     try{
+        const { channelname } = req.params;
 
-    }catch(){
+        if(!channelname?.length) {
+            throw new ApiError(400, "Channel name is missing")
+        }
 
+        const channel = await User.aggregate([
+            {
+                $match: {
+                    _id: new moongose.Types.ObjectId(req.user?._id)
+                }
+            },
+            {
+                $lookup: {
+                    from: "subscriptions",
+                    localField: "_id",
+                    foreignField: "subscriber",
+                    as: "subscribeTo"
+                }
+            },
+            {
+                $lookup: {
+                    from: "subscriptions",
+                    localField: "_id",
+                    foreignField: "channel",
+                    as: "subscribers"
+                }
+            },
+            {
+                $addFields: {
+                    subscribersCount: {
+                        $size: "$subscribers"
+                    },
+                    subscribedToCount: {
+                        $size: "$subscribeTo"
+                    },
+                    isSubscribed: {
+                        $cond:{
+                            if: {$in: [req.user._id, "$subscribers.subscriber"]},
+                            then: true,
+                            else: false
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    firstName: 1,
+                    lastName: 1,
+                    channelname: 1,
+                    subscribedToCount: 1,
+                    subscribersCount: 1,
+                    isSubscribed: 1,
+                    avatar: 1,
+                    bannerImage: 1,
+                }
+            }
+        ])
+
+        if(!channel?.length){
+            throw new ApiError(400, "Channel does not exits")
+        }
+
+        return res
+        .status(200)
+        .json(
+            new ApiResponse(200, channel[0], "User channel fetch successfully")
+        )
+
+    }catch(error){
+        throw new ApiError(400, "Something went while getting the channel profile")
     }
+})
+
+export const getWatchHistory = asyncHandler (async (req, res) => {
+    const user = User.aggregate([
+        {
+            $match: {
+                _id: new moongose.Types.ObjectId(req,user?._id)
+            }
+        },
+        {
+            $lookup: {
+                from: "videos",
+                localField: "watchHistory",
+                foreignField: "_id",
+                as: "watchHistory",
+                pipeline: [
+                    {
+                        $lookup: {
+                            from: "users",
+                            localField: "owner",
+                            foreignField: "_id",
+                            as: "owner",
+                            pipeline: [
+                                {
+                                    $project: {
+                                        firstName: 1,
+                                        lastName: 1,
+                                        avatar: 1,
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        $addFields: {
+                            owner:{
+                                $first: "$owner"
+                            }
+                        }
+                    }
+                ]
+            } 
+        }
+    ])
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, user[0].watchHistory, "Watch history fetched successfully")
+    )
 })
