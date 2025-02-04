@@ -8,7 +8,9 @@ app.use(cookieParser());
 
 
 import authUserRouter from "./routes/authUser.router.js";
+import playlistRouter from "./routes/playlist.router.js";
+
 app.use("/api/v1/user/auth", authUserRouter);
-app.use("/api/v1/user/ch", authUserRouter);
+app.use("/api/v1/user/ch", playlistRouter);
 
 export {app};
