@@ -27,7 +27,9 @@ const registerSchema = z.object({
   lastName: z.string().min(2, "Last name must be at least 2 characters").max(40),
   email: z.string().email("Invalid email address"),
   password: z.string().min(10, "Password must be at least 10 characters"),
-  channelName: z.string().max(30, "Channel name must be less than 30 characters"),
+  channelName: z.string()
+  .min(2, "Channel name must be at least 2 characters")
+  .max(30, "Channel name must be less than 30 characters"),
   avatar: z.instanceof(File).optional(),
   bannerImage: z.instanceof(File).optional(),
 });
@@ -128,7 +130,7 @@ const AuthForm = ({ mode = "login" }) => {
               <FormControl>
                 <Input id="password" type="password" placeholder="Enter password" {...field} />
               </FormControl>
-              {mode === "register" && <PasswordStrength password={field.value} />}
+              {mode === "register" && <PasswordStrength password={field.value} className="mt-5"/>}
               <FormMessage>{form.formState.errors?.password?.message}</FormMessage>
             </FormItem>
           )}

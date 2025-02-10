@@ -7,13 +7,13 @@ const AuthPage = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side: Authentication Card */}
-      <div className="bg-white min-w-[50%] flex items-center justify-center">
-        <Card className="w-full max-w-md border-2">
+      <div className="bg-gray-100 min-w-[50%] flex items-center justify-center">
+        <Card className="w-full max-w-md border-2 pt-2">
           <CardContent>
-            <Tabs defaultValue="login">
-              <TabsList>
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Register</TabsTrigger>
+            <Tabs defaultValue="login" className="w-full">
+              <TabsList className="w-full">
+                <TabsTrigger value="login" className="w-[50%]">Login</TabsTrigger>
+                <TabsTrigger value="register" className="w-[50%]">Register</TabsTrigger>
               </TabsList>
               <TabsContent value="login">
                 <AuthForm mode="login" />
@@ -27,7 +27,7 @@ const AuthPage = () => {
       </div>
 
       {/* Right Side: Welcome Section */}
-      <div className="bg-red-800 min-w-[50%] flex items-center justify-center p-12">
+      <div className="bg-gray-600 min-w-[50%] flex items-center justify-center p-12">
         <div className="max-w-md text-white">
           <h1 className="text-4xl font-bold tracking-tight">
             Welcome to Our Platform
