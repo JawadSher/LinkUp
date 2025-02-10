@@ -35,6 +35,7 @@ const registerSchema = z.object({
 });
 
 const AuthForm = ({ mode = "login" }) => {
+  const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState(null);
 
