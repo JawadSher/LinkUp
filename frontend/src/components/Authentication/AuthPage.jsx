@@ -30,7 +30,7 @@ const AuthPage = () => {
       <div className="bg-gray-600 min-w-[50%] flex items-center justify-center p-12">
         <div className="max-w-md text-white">
           <h1 className="text-4xl font-bold tracking-tight">
-            Welcome to Our Platform
+            Welcome to Linkup
           </h1>
           <p className="mt-4 text-lg text-gray-300">
             Join thousands of users who trust our platform for managing their

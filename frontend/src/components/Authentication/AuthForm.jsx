@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import PasswordStrength from "./PasswordStrength";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react"; // Ensure this is installed
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -23,13 +23,20 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
-  firstName: z.string().min(2, "First name must be at least 2 characters").max(40),
-  lastName: z.string().min(2, "Last name must be at least 2 characters").max(40),
+  firstName: z
+    .string()
+    .min(2, "First name must be at least 2 characters")
+    .max(40),
+  lastName: z
+    .string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(40),
   email: z.string().email("Invalid email address"),
   password: z.string().min(10, "Password must be at least 10 characters"),
-  channelName: z.string()
-  .min(2, "Channel name must be at least 2 characters")
-  .max(30, "Channel name must be less than 30 characters"),
+  channelName: z
+    .string()
+    .min(2, "Channel name must be at least 2 characters")
+    .max(30, "Channel name must be less than 30 characters"),
   avatar: z.instanceof(File).optional(),
   bannerImage: z.instanceof(File).optional(),
 });
@@ -70,7 +77,9 @@ const AuthForm = ({ mode = "login" }) => {
                 <FormControl>
                   <Input id="firstName" placeholder="First name" {...field} />
                 </FormControl>
-                <FormMessage>{form.formState.errors?.firstName?.message}</FormMessage>
+                <FormMessage>
+                  {form.formState.errors?.firstName?.message}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -86,7 +95,9 @@ const AuthForm = ({ mode = "login" }) => {
                 <FormControl>
                   <Input id="lastName" placeholder="Last name" {...field} />
                 </FormControl>
-                <FormMessage>{form.formState.errors?.lastName?.message}</FormMessage>
+                <FormMessage>
+                  {form.formState.errors?.lastName?.message}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -114,9 +125,15 @@ const AuthForm = ({ mode = "login" }) => {
               <FormItem>
                 <FormLabel htmlFor="channelName">Channel Name</FormLabel>
                 <FormControl>
-                  <Input id="channelName" placeholder="Channel name" {...field}  />
+                  <Input
+                    id="channelName"
+                    placeholder="Channel name"
+                    {...field}
+                  />
                 </FormControl>
-                <FormMessage>{form.formState.errors?.channelName?.message}</FormMessage>
+                <FormMessage>
+                  {form.formState.errors?.channelName?.message}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -126,13 +143,32 @@ const AuthForm = ({ mode = "login" }) => {
           control={form.control}
           name="password"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="relative">
               <FormLabel htmlFor="password">Password</FormLabel>
               <FormControl>
-                <Input id="password" type="password" placeholder="Password" {...field} />
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  {...field}
+                />
               </FormControl>
-              {mode === "register" && <PasswordStrength password={field.value} className="mt-5"/>}
-              <FormMessage>{form.formState.errors?.password?.message}</FormMessage>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="absolute right-0 top-7 border-none text-gray-600 hover:bg-transparent active:bg-transparent focus:outline-none"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <Eye /> : <EyeOff />}
+              </Button>
+
+              {mode === "register" && (
+                <PasswordStrength password={field.value} className="mt-5" />
+              )}
+              <FormMessage>
+                {form.formState.errors?.password?.message}
+              </FormMessage>
             </FormItem>
           )}
         />
