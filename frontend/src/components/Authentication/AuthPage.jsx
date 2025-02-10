@@ -8,7 +8,7 @@ const AuthPage = () => {
     <div className="min-h-screen flex">
       {/* Left Side: Authentication Card */}
       <div className="bg-gray-100 min-w-[50%] flex items-center justify-center">
-        <Card className="w-full max-w-md border-2 pt-2">
+        <Card className="w-full max-w-md border-2 pt-4">
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="w-full">

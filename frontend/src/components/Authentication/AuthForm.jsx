@@ -67,7 +67,7 @@ const AuthForm = ({ mode = "login" }) => {
               <FormItem>
                 <FormLabel htmlFor="firstName">First Name</FormLabel>
                 <FormControl>
-                  <Input id="firstName" placeholder="Enter first name" {...field} />
+                  <Input id="firstName" placeholder="First name" {...field} />
                 </FormControl>
                 <FormMessage>{form.formState.errors?.firstName?.message}</FormMessage>
               </FormItem>
@@ -83,7 +83,7 @@ const AuthForm = ({ mode = "login" }) => {
               <FormItem>
                 <FormLabel htmlFor="lastName">Last Name</FormLabel>
                 <FormControl>
-                  <Input id="lastName" placeholder="Enter last name" {...field} />
+                  <Input id="lastName" placeholder="Last name" {...field} />
                 </FormControl>
                 <FormMessage>{form.formState.errors?.lastName?.message}</FormMessage>
               </FormItem>
@@ -98,7 +98,7 @@ const AuthForm = ({ mode = "login" }) => {
             <FormItem>
               <FormLabel htmlFor="email">Email</FormLabel>
               <FormControl>
-                <Input id="email" placeholder="Enter email address" {...field} />
+                <Input id="email" placeholder="Email address" {...field} />
               </FormControl>
               <FormMessage>{form.formState.errors?.email?.message}</FormMessage>
             </FormItem>
@@ -113,7 +113,7 @@ const AuthForm = ({ mode = "login" }) => {
               <FormItem>
                 <FormLabel htmlFor="channelName">Channel Name</FormLabel>
                 <FormControl>
-                  <Input id="channelName" placeholder="Enter channel name" {...field} />
+                  <Input id="channelName" placeholder="Channel name" {...field}  />
                 </FormControl>
                 <FormMessage>{form.formState.errors?.channelName?.message}</FormMessage>
               </FormItem>
@@ -128,7 +128,7 @@ const AuthForm = ({ mode = "login" }) => {
             <FormItem>
               <FormLabel htmlFor="password">Password</FormLabel>
               <FormControl>
-                <Input id="password" type="password" placeholder="Enter password" {...field} />
+                <Input id="password" type="password" placeholder="Password" {...field} />
               </FormControl>
               {mode === "register" && <PasswordStrength password={field.value} className="mt-5"/>}
               <FormMessage>{form.formState.errors?.password?.message}</FormMessage>

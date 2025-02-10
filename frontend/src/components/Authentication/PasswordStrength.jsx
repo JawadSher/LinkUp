@@ -37,7 +37,7 @@ const PasswordStrength = ({ password }) => {
 
   return (
     <div>
-        <p className={`${colorClass} font-semibold`}>{passStatus}</p>
+        <p className={`${colorClass} font-semibold text-[14px] pb-1`}>{passStatus}</p>
         <Progress value={strength} />
     </div>
     
