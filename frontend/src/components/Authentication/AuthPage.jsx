@@ -1,12 +1,11 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import AuthForm from "./AuthForm"; // Import the correct AuthForm component
+import AuthForm from "./AuthForm";
 
 const AuthPage = () => {
   return (
     <div className="min-h-screen flex">
-      {/* Left Side: Authentication Card */}
       <div className="bg-gray-100 min-w-[50%] flex items-center justify-center">
         <Card className="w-full max-w-md border-2 pt-4">
           <CardContent>
@@ -25,8 +24,7 @@ const AuthPage = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Right Side: Welcome Section */}
+      
       <div className="bg-gray-600 min-w-[50%] flex items-center justify-center p-12">
         <div className="max-w-md text-white">
           <h1 className="text-4xl font-bold tracking-tight">

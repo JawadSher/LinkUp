@@ -1,9 +1,12 @@
 import React from 'react'
-import AuthPage from './components/Authentication/AuthPage'
+import Navbar from './components/Navbar/Navbar'
 
 const App = () => {
   return (
-    <AuthPage />
+    <div className='min-h-screen bg-gray-600 text-white text-[50px] flex flex-col items-center justify-start'>
+      <Navbar />
+      <h1>Home Page</h1>
+    </div>
   )
 }
 

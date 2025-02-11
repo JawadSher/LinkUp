@@ -93,7 +93,7 @@ export const loginUser = asyncHandler( async (req, res) => {
         new ApiResponse(
             200,
             {
-                user: loggedInUser, accessToken, refreshToken
+                user: loggedInUser
             },
             "User logged in successfully"
         )
@@ -145,7 +145,7 @@ export const refreshAccessToken = asyncHandler (async (req, res) => {
         .cookie("accessToken", accessToken, options)
         .cookie("refreshToken", newRefreshToken, options)
         .json(
-            new ApiResponse(200, {accessToken, refreshToken: newRefreshToken}, "Access token refreshed")
+            new ApiResponse(200, {}, "Access token refreshed")
         )
     } catch (error) {
         throw new ApiError(401, error?.message || "Invalid refresh token")

@@ -1,4 +1,5 @@
 import React, { useState, useTransition } from "react";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,6 +17,9 @@ import { Input } from "@/components/ui/input";
 import PasswordStrength from "./PasswordStrength";
 import { Button } from "@/components/ui/button";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login, signup } from "@/features/auth/authSlice.js";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -45,6 +49,8 @@ const AuthForm = ({ mode = "login" }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const schema = mode === "login" ? loginSchema : registerSchema;
   const form = useForm({
@@ -58,15 +64,37 @@ const AuthForm = ({ mode = "login" }) => {
     },
   });
 
-  const onSubmit = (data) => {
+  const loginSubmit = (data) => {
     startTransition(async () => {
+      console.log("login Method called")
+
+      const {email, password} = data;
+      const result = await dispatch(login({email, password}));
+      if(result.meta.requestStatus === 'fulfilled'){
+        navigate("/")
+      }
+    });
+  };
+
+  const signupSubmit = (data) => {
+    startTransition(async () => {
+      console.log("sign Method called")
+
       console.log(data);
+      const {firstName, lastName, channelName, email, password} = data;
+      const result = await dispatch(signup({firstName, lastName, channelName, email, password}));
+
+
+      console.log("result: ", result);
+      if(result.meta.requestStatus === 'fulfilled'){
+        navigate("/")
+      }
     });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={mode === "login" ? form.handleSubmit(loginSubmit) : form.handleSubmit(signupSubmit)} className="space-y-4">
         {mode === "register" && (
           <FormField
             control={form.control}
