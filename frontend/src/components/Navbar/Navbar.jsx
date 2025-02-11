@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Search } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -11,12 +11,12 @@ import Profile from "./Profile";
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = dispatch(fetchUser());
-  const [fullName, setFullName] = useState("");
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     user.then((result) => {
       const fullname = result.payload.data.firstName + " " + result.payload.data.lastName
-      setFullName(fullname)
+      setUserData(result.payload.data)
     })
   }, [user])
 
@@ -33,16 +33,9 @@ const Navbar = () => {
           className="border-l-2 border-gray-500 pl-1 w-7"
         />
       </div>
-      <Profile />
       <div>
         {user ? (
-          <div className="flex flex-col items-center justify-center cursor-pointer"> 
-            <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <h1 className="text-[15px]">{fullName}</h1>
-          </div>
+          <Profile userData={userData} />
         ) : (
           <Link to="/api/v1/user/auth/">
             {" "}
