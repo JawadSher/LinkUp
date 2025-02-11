@@ -44,7 +44,7 @@ const Profile = ({ userData }) => {
       <DropdownMenuTrigger asChild>
         <div className="flex flex-col items-center justify-center cursor-pointer">
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" alt="Profile" />
+            <AvatarImage src={`${userData.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
@@ -53,7 +53,7 @@ const Profile = ({ userData }) => {
         <div className="flex items-center justify-between p-2">
           <div className="flex flex-col items-center justify-center cursor-pointer max-w-[30%]">
             <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="Profile" />
+              <AvatarImage src={`${userData.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
               <AvatarFallback className="text-[18px]">
                 {/* {userData.firstName[0] + userData.lastName[0]} */}
               </AvatarFallback>
@@ -70,14 +70,6 @@ const Profile = ({ userData }) => {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Profile
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            {userData.firstName}
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger className="dropdown-sub-trigger">
               Settings
@@ -98,15 +90,10 @@ const Profile = ({ userData }) => {
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuItem>
-            Keyboard shortcuts
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+        <DropdownMenuItem className="flex items-center justify-center bg-red-600 font-semibold text-[15px]">
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
