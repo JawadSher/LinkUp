@@ -1,13 +1,10 @@
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -17,8 +14,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
 import "./profile.css";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "@/features/auth/authSlice.js";
 
 const Profile = ({ userData }) => {
+    const dispatch = useDispatch();
+    
+    const handleLogoutUser =  () => {
+        const response = dispatch(logout());
+        console.log(response);
+    }
+
   const [darkTheme, setDarkTheme] = useState(() => {
     // Initialize from localStorage
     return localStorage.getItem('theme') === 'dark';
@@ -92,7 +98,7 @@ const Profile = ({ userData }) => {
           </DropdownMenuSub>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center justify-center bg-red-600 font-semibold text-[15px]">
+        <DropdownMenuItem className="flex items-center justify-center bg-red-600 font-semibold text-[15px]" onClick={handleLogoutUser}>
           Logout
         </DropdownMenuItem>
       </DropdownMenuContent>

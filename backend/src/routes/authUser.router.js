@@ -31,7 +31,7 @@ router.route("/register").post(upload.fields([
 
 router.route("/login").post(loginUser);
 router.route("/logout").post(verifyJWT, logoutUser);
-router.route("/refesh-access-token").post(refreshAccessToken);
+router.route("/refresh-access-token").get(refreshAccessToken);
 router.route("/update-password").post(verifyJWT, updatePassword);
 router.route("/update-account-details").patch(verifyJWT, updateAccount);
 router.route("/update-avatar").patch(verifyJWT, upload.single("avatar"), updateAvatar);

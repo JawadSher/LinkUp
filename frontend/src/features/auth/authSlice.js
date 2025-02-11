@@ -4,6 +4,7 @@ import API from '../../api/api';
 export const fetchUser = createAsyncThunk("auth/fetchUser", async (_, thunkAPI) => {
     try{
         const response = await API.get("/user/auth/current-user");
+        thunkAPI.dispatch(setUser(response.data))
         return response.data;
     } catch (error){
         return thunkAPI.rejectWithValue(error.response?.data?.message || "Failed to get current user")
@@ -24,18 +25,15 @@ export const signup = createAsyncThunk("auth/signup", async ({firstName, lastNam
     try{
         const response = await API.post("/user/auth/register", {firstName, lastName, email, channelName, password});
 
-        console.log(response);
-        
         return response.data;
     } catch (error){
-        console.error("Signup Error: ", error.response);
-        return thunkAPI.rejectWithValue(error.response?.message || "Registration Failed")
+        return thunkAPI.rejectWithValue(error.response?.data?.message || "Registration Failed")
     }
 })
 
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     try{
-        await API.get("/user/auth/logout");
+        await API.post("/user/auth/logout");
         return null;
     } catch(error){
         return thunkAPI.rejectWithValue(error.response?.data?.message || "Logout failed")

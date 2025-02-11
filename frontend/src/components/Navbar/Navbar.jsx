@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-
 import { Search } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { fetchUser } from "@/features/auth/authSlice";
 import Profile from "./Profile";
 
-const Navbar = () => {
-  const dispatch = useDispatch();
-  const user = dispatch(fetchUser());
-  const [userData, setUserData] = useState({});
-
-  useEffect(() => {
-    user.then((result) => {
-      const fullname = result.payload.data.firstName + " " + result.payload.data.lastName
-      setUserData(result.payload.data)
-    })
-  }, [user])
-
+const Navbar = ({userData}) => {
+  console.log(userData)
+  
   return (
     <div className="w-full h-[70px] bg-gray-950 flex items-center justify-between px-5">
       <div>LinkUp</div>
@@ -34,7 +21,7 @@ const Navbar = () => {
         />
       </div>
       <div>
-        {user ? (
+        {userData?.statusCode === 200 ? (
           <Profile userData={userData} />
         ) : (
           <Link to="/api/v1/user/auth/">

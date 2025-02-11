@@ -1,5 +1,6 @@
 import axios from "axios";
-import { logout, setUser } from "../features/auth/authSlice";
+import { logout } from "../features/auth/authSlice";
+import { store } from "../store/store.js"
 
 const API = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -14,7 +15,7 @@ API.interceptors.response.use(
         if(error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             try{
-                await API.get("/auth/refresh-token");
+                await API.get("/user/auth/refresh-access-token");
                 return API(originalRequest);
             } catch(refreshError){
                 store.dispatch(logout())
