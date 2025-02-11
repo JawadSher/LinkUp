@@ -6,7 +6,7 @@ import Profile from "./Profile";
 
 const Navbar = ({ user }) => {
   return (
-    <div className="w-full h-[70px] bg-gray-950 flex items-center justify-between px-5">
+    <div className="m-3 w-full h-[70px] bg-gray-950 flex items-center justify-between px-5 rounded-xl">
       <div className="flex items-center justify-center">
         <Link to="/">
           <Button className="border-none outline-none bg-transparent text-white text-[30px] flex items-center justify-center w-full h-full hover:bg-transparent hover:text-blue-500">
