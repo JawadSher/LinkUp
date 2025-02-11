@@ -1,0 +1,44 @@
+/* profile.css */
+
+/* Common styles for all dropdown menu items */
+[role="menuitem"],
+.dropdown-sub-trigger {
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+}
+
+[role="menuitem"]:hover,
+[role="menuitem"]:focus,
+.dropdown-sub-trigger:hover,
+.dropdown-sub-trigger:focus {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* Settings menu trigger styles */
+.dropdown-sub-trigger {
+  position: relative;
+}
+
+.dropdown-sub-trigger[data-state="open"],
+.dropdown-sub-trigger[data-state="open"]:hover {
+  background-color: black !important;
+}
+
+/* Sub-menu content styles */
+.dropdown-sub-content {
+  background-color: rgb(17, 24, 39) !important;
+  color: white !important;
+}
+
+/* Ensure consistent hover on all items */
+.dropdown-menu-content [role="menuitem"]:hover {
+  background-color: black !important;
+  color: white !important;
+}
+
+/* Remove any default button styles */
+.dropdown-sub-content button {
+  all: unset;
+  width: 100%;
+}
