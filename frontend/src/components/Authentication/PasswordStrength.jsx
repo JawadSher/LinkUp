@@ -1,5 +1,4 @@
 import { Progress } from "@/components/ui/progress";
-import { useState } from "react";
 
 const passStrength = (password) => {
   let passStrength = 0;

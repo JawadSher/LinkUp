@@ -1,8 +1,7 @@
 import Navbar from "./components/Navbar/Navbar";
 import { fetchUser } from "@/features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { setUser } from "@/features/auth/authSlice";
+import { useEffect } from "react";
 
 const App = () => {
   const dispatch = useDispatch();
