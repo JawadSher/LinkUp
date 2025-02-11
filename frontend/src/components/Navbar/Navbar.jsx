@@ -4,8 +4,7 @@ import { Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import Profile from "./Profile";
 
-const Navbar = ({userData}) => {
-  console.log(userData)
+const Navbar = ({user}) => {
   
   return (
     <div className="w-full h-[70px] bg-gray-950 flex items-center justify-between px-5">
@@ -21,8 +20,8 @@ const Navbar = ({userData}) => {
         />
       </div>
       <div>
-        {userData?.statusCode === 200 ? (
-          <Profile userData={userData} />
+        {user?.statusCode === 200 ? (
+          <Profile user={user} />
         ) : (
           <Link to="/api/v1/user/auth/">
             {" "}

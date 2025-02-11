@@ -17,12 +17,11 @@ import "./profile.css";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/features/auth/authSlice.js";
 
-const Profile = ({ userData }) => {
+const Profile = ({ user }) => {
     const dispatch = useDispatch();
     
     const handleLogoutUser =  () => {
-        const response = dispatch(logout());
-        console.log(response);
+      dispatch(logout());
     }
 
   const [darkTheme, setDarkTheme] = useState(() => {
@@ -50,7 +49,7 @@ const Profile = ({ userData }) => {
       <DropdownMenuTrigger asChild>
         <div className="flex flex-col items-center justify-center cursor-pointer">
           <Avatar>
-            <AvatarImage src={`${userData.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
+            <AvatarImage src={`${user?.data?.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </div>
@@ -59,18 +58,18 @@ const Profile = ({ userData }) => {
         <div className="flex items-center justify-between p-2">
           <div className="flex flex-col items-center justify-center cursor-pointer max-w-[30%]">
             <Avatar>
-              <AvatarImage src={`${userData.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
+              <AvatarImage src={`${user?.data?.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
               <AvatarFallback className="text-[18px]">
-                {/* {userData.firstName[0] + userData.lastName[0]} */}
+                {/* {user.firstName[0] + user.lastName[0]} */}
               </AvatarFallback>
             </Avatar>
           </div>
           <div className="min-w-[70%] h-fit flex items-start justify-center flex-col">
             <h1 className="text-[18px] font-semibold">
-              {userData.firstName + " " + userData.lastName}
+              {user?.data?.firstName + " " + user?.data?.lastName}
             </h1>
             <h1 className="text-[15px] font-semibold">
-              {userData.channelName}
+              {user?.data?.channelName}
             </h1>
           </div>
         </div>

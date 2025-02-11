@@ -1,6 +1,5 @@
 import axios from "axios";
 import { logout } from "../features/auth/authSlice";
-import { store } from "../store/store.js"
 
 const API = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -18,6 +17,7 @@ API.interceptors.response.use(
                 await API.get("/user/auth/refresh-access-token");
                 return API(originalRequest);
             } catch(refreshError){
+                const store = (await import("../store/store.js")).default;
                 store.dispatch(logout())
             }
         }

@@ -7,7 +7,7 @@ import { setUser } from "@/features/auth/authSlice";
 const App = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
-
+  
   useEffect(() => {
     dispatch(fetchUser());
   }, [dispatch]);
