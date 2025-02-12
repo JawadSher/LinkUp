@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Sun, Moon } from "lucide-react";
 import { useState, useEffect } from "react";
 import "./profile.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logout } from "@/features/auth/authSlice.js";
 
 const Profile = ({ user }) => {
@@ -25,12 +25,10 @@ const Profile = ({ user }) => {
     }
 
   const [darkTheme, setDarkTheme] = useState(() => {
-    // Initialize from localStorage
     return localStorage.getItem('theme') === 'dark';
   });
 
   useEffect(() => {
-    // Update document class and localStorage when theme changes
     if (darkTheme) {
       document.documentElement.classList.add('dark');
       localStorage.setItem('theme', 'dark');
@@ -73,6 +71,10 @@ const Profile = ({ user }) => {
             </h1>
           </div>
         </div>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          Visit Profile
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuSub>
