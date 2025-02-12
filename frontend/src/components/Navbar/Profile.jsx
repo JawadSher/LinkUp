@@ -22,7 +22,7 @@ const Profile = ({ user }) => {
     
     const handleLogoutUser =  () => {
       dispatch(logout()).then(()=>{
-        window.location.href = "/login"
+        window.location.href = "/api/v1/user/auth"
       });
     }
 

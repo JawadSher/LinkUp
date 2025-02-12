@@ -19,6 +19,7 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "@/features/auth/authSlice.js";
+import { toast } from "react-toastify";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -65,35 +66,43 @@ const AuthForm = ({ mode = "login" }) => {
 
   const loginSubmit = (data) => {
     startTransition(async () => {
-      console.log("login Method called")
+      const { email, password } = data;
+      const result = await dispatch(login({ email, password }));
 
-      const {email, password} = data;
-      const result = await dispatch(login({email, password}));
-      if(result.meta.requestStatus === 'fulfilled'){
-        navigate("/")
+      // if (result.payload.status === 401) toast.error("Invalid Credentials");
+
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/");
       }
     });
   };
 
   const signupSubmit = (data) => {
     startTransition(async () => {
-      console.log("sign Method called")
+      const { firstName, lastName, channelName, email, password } = data;
+      const result = await dispatch(
+        signup({ firstName, lastName, channelName, email, password })
+      );
 
-      console.log(data);
-      const {firstName, lastName, channelName, email, password} = data;
-      const result = await dispatch(signup({firstName, lastName, channelName, email, password}));
+      // if (result.payload.status === 409)
+      //   toast.error("Account already exists with this email");
 
-
-      console.log("result: ", result);
-      if(result.meta.requestStatus === 'fulfilled'){
-        navigate("/")
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/api/v1/user/auth");
       }
     });
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={mode === "login" ? form.handleSubmit(loginSubmit) : form.handleSubmit(signupSubmit)} className="space-y-4">
+      <form
+        onSubmit={
+          mode === "login"
+            ? form.handleSubmit(loginSubmit)
+            : form.handleSubmit(signupSubmit)
+        }
+        className="space-y-4"
+      >
         {mode === "register" && (
           <FormField
             control={form.control}

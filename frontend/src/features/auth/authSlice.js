@@ -17,7 +17,7 @@ export const login = createAsyncThunk("auth/login", async ({email, password}, th
 
         return response.data;
     }catch(error){
-        return thunkAPI.rejectWithValue(error.response?.data?.message || "Login failed")
+        return thunkAPI.rejectWithValue(error || "Login failed")
     }
 });
 
@@ -27,7 +27,7 @@ export const signup = createAsyncThunk("auth/signup", async ({firstName, lastNam
 
         return response.data;
     } catch (error){
-        return thunkAPI.rejectWithValue(error.response?.data?.message || "Registration Failed")
+        return thunkAPI.rejectWithValue(error || "Registration Failed")
     }
 })
 
