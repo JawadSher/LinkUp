@@ -19,7 +19,9 @@ import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, signup } from "@/features/auth/authSlice.js";
-import { toast } from "react-toastify";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/hooks/use-toast"
+
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -77,15 +79,25 @@ const AuthForm = ({ mode = "login" }) => {
     });
   };
 
+  const errorToast = () => {
+    const {toast} = useToast();
+    toast({
+      variant: "destructive",
+      title: "Use Another Gmail",
+      description: "Account with this gmail is already exists"
+    })
+  }
+
   const signupSubmit = (data) => {
+
     startTransition(async () => {
       const { firstName, lastName, channelName, email, password } = data;
       const result = await dispatch(
         signup({ firstName, lastName, channelName, email, password })
       );
 
-      // if (result.payload.status === 409)
-      //   toast.error("Account already exists with this email");
+      if (result.payload.status === 409) errorToast();
+        
 
       if (result.meta.requestStatus === "fulfilled") {
         navigate("/api/v1/user/auth");
@@ -94,6 +106,8 @@ const AuthForm = ({ mode = "login" }) => {
   };
 
   return (
+    <div>
+      <Toaster />
     <Form {...form}>
       <form
         onSubmit={
@@ -215,6 +229,7 @@ const AuthForm = ({ mode = "login" }) => {
         </Button>
       </form>
     </Form>
+    </div>
   );
 };
 
