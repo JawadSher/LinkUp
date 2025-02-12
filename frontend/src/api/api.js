@@ -10,6 +10,10 @@ API.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        
+        if(error.response?.status === 401 && originalRequest.url.includes("/refresh-access-token")){
+            return Promise.reject(error);
+        }
 
         if(error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
@@ -18,7 +22,9 @@ API.interceptors.response.use(
                 return API(originalRequest);
             } catch(refreshError){
                 const store = (await import("../store/store.js")).default;
-                store.dispatch(logout())
+                const user = store.getState().auth.user;
+
+                if(user) store.dispatch(logout());
             }
         }
 

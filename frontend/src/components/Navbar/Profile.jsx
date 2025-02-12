@@ -21,7 +21,9 @@ const Profile = ({ user }) => {
     const dispatch = useDispatch();
     
     const handleLogoutUser =  () => {
-      dispatch(logout());
+      dispatch(logout()).then(()=>{
+        window.location.href = "/login"
+      });
     }
 
   const [darkTheme, setDarkTheme] = useState(() => {
@@ -64,10 +66,10 @@ const Profile = ({ user }) => {
           </div>
           <div className="min-w-[70%] h-fit flex items-start justify-center flex-col">
             <h1 className="text-[18px] font-semibold">
-              {user?.data?.firstName + " " + user?.data?.lastName}
+              {user?.data?.user?.firstName + " " + user?.data?.user?.lastName}
             </h1>
             <h1 className="text-[15px] font-semibold">
-              {user?.data?.channelName}
+              {user?.data?.user?.channelName}
             </h1>
           </div>
         </div>

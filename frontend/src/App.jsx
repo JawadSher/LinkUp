@@ -9,8 +9,8 @@ const App = () => {
   const user = useSelector((state) => state.auth.user);
   
   useEffect(() => {
-    dispatch(fetchUser());
-  }, [dispatch]);
+    if(!user) dispatch(fetchUser());
+  }, [dispatch, user]);
 
   return (
     <div className="min-h-screen text-white text-[50px] ml-3 mr-3 flex flex-col items-center justify-start">

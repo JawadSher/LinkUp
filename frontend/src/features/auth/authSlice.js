@@ -34,6 +34,8 @@ export const signup = createAsyncThunk("auth/signup", async ({firstName, lastNam
 export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     try{
         await API.post("/user/auth/logout");
+        API.interceptors.response.handlers = [];
+        localStorage.clear();
         return null;
     } catch(error){
         return thunkAPI.rejectWithValue(error.response?.data?.message || "Logout failed")
@@ -74,7 +76,7 @@ export const authSlice = createSlice({
                 state.user = null;
                 state.error = action.payload
             })
-            .addCase(logout.fulfilled, (state, action) => {
+            .addCase(logout.fulfilled, (state) => {
                 state.user = null;
             })
             .addCase(signup.fulfilled, (state, action) => {
