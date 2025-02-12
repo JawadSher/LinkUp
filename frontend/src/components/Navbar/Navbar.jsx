@@ -1,8 +1,18 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Search } from "lucide-react";
+import { Search, Bell, Plus, Video, File } from "lucide-react";
 import { Link } from "react-router-dom";
 import Profile from "./Profile";
+
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 
 const Navbar = ({ user }) => {
   return (
@@ -24,7 +34,28 @@ const Navbar = ({ user }) => {
           className="border-l-2 border-gray-500 pl-1 w-7"
         />
       </div>
-      <div>
+      <div className="flex items-center gap-5">
+        <Menubar className="w-25 rounded-full">
+          <MenubarMenu className="w-25 ">
+            <MenubarTrigger className="w-full h-full rounded-full">
+              <Plus color="#ffffff" />{" "}
+              <p className="ml-1 text-[16px] font-normal">Create</p>
+            </MenubarTrigger>
+            <MenubarContent className="">
+              <MenubarItem className="flex items-center justify-between">
+                <Video color="#ffffff" className="w-[20px]" />
+                <p className=" min-w-24 font-normal">Upload video</p>
+              </MenubarItem>
+              <MenubarSeparator />
+              <MenubarItem className="flex items-center justify-between">
+                <File color="#ffffff" className="w-[20px]" />
+                <p className=" min-w-24 font-normal">Create post</p>
+              </MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+
+        <Bell color="#ffffff" className="cursor-pointer hover:fill-red-700"/>
         {user?.statusCode === 200 ? (
           <Profile user={user} />
         ) : (
