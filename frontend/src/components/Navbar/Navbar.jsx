@@ -10,7 +10,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
@@ -24,14 +23,14 @@ const Navbar = ({ user }) => {
           </Button>
         </Link>
       </div>
-      <div className="min-w-[500px] min-h-8 rounded-full border-2 border-gray-500 flex items-center pr-2">
+      <div className="min-w-[500px] min-h-9 rounded-full border-2 border-gray-500 flex items-center pr-2">
         <Input
-          className="w-full h-full rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0"
+          className="w-full h-full rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0 font-normal tracking-wide"
           placeholder="Search here"
         />
         <Search
           color="#808080"
-          className="border-l-2 border-gray-500 pl-1 w-7"
+          className="border-l-2 border-gray-500 pl-1 w-7 b"
         />
       </div>
       <div className="flex items-center gap-5">
