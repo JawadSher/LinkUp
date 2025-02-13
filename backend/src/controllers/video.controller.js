@@ -79,7 +79,7 @@ export const getOwnerChannelVideos = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Valid user ID is required to get channel videos");
   }
 
-  const userExist = await User.findById(userId);
+  const userExist = await User.exists({_id: userId});
   if (!userExist) {
     throw new ApiError(400, "User not found");
   }
