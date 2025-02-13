@@ -30,9 +30,9 @@ const uploadtoCloudinary = async (fileLocalPath) => {
     }
 }
 
-const deleteFromCloudinary = async (imageURL) => {
+const deleteFromCloudinary = async (fileURL) => {
     try {
-        const urlParts = imageURL.split('/');
+        const urlParts = fileURL.split('/');
         const fileName = urlParts[urlParts.length - 1];
         const publicID = fileName.split('.')[0];
 
