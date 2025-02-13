@@ -11,7 +11,7 @@ import { User } from "../models/user.model.js";
 import { Comment } from "../models/comment.model.js";
 import { Like } from "../models/like.model.js";
 
-const publishVideo = asyncHandler(async (req, res) => {
+export const publishVideo = asyncHandler(async (req, res) => {
   const { title, description, isPublic = true } = req.body;
   const userId = req.user._id;
 
