@@ -36,8 +36,12 @@ app.use((err, req, res, next) => {
 
 import authUserRouter from "./routes/authUser.router.js";
 import playlistRouter from "./routes/playlist.router.js";
+import videoRouter from "./routes/video.router.js";
+import userRouter from "./routes/user.router.js";
 
 app.use("/api/v1/user/auth", authUserRouter);
-app.use("/api/v1/user/ch", playlistRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/playlists", playlistRouter);
+app.use("/api/v1/videos", videoRouter);
 
 export { app };

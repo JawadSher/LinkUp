@@ -71,27 +71,83 @@ export const publishVideo = asyncHandler(async (req, res) => {
     );
 });
 
-export const getAllVideos = asyncHandler(async (req, res) => {
+export const getOwnerChannelVideos = asyncHandler(async (req, res) => {
+  const { limit = 10, page = 1 } = req.query;
+  const userId = req.user?._id;
+
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    throw new ApiError(400, "Valid user ID is required to get channel videos");
+  }
+
+  const userExist = await User.findById(userId);
+  if (!userExist) {
+    throw new ApiError(400, "User not found");
+  }
+
+  const match = {
+    owner: userId,
+  };
+
+  const videos = await Video.find(match)
+    .skip((page - 1) * parseInt(limit))
+    .limit(parseInt(limit))
+    .populate("owner", "_id firstName lastName userName")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  if (!videos.length) {
+    throw new ApiError(404, "Videos not found for this user");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videos, "Videos fetched successfully"));
+});
+
+export const getSpecificChannelVideos = asyncHandler(async (req, res) => {
   const { limit = 10, page = 1, userId } = req.query;
 
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-    throw new ApiError(400, "Valid user id is required to get channel videos");
+    throw new ApiError(400, "Valid user ID is required to get channel videos");
   }
 
   const match = {
     owner: new mongoose.Types.ObjectId(userId),
-    isPublished: true,
     isPublic: true,
   };
 
-  const videos = Video.find(match)
-    .skip((page - 1) * limit)
+  const videos = await Video.find(match)
+    .skip((page - 1) * parseInt(limit))
     .limit(parseInt(limit))
     .populate("owner", "_id firstName lastName userName")
-    .sort({ createdAt: -1 });
+    .sort({ createdAt: -1 })
+    .lean();
 
-  if (!videos) {
+  if (!videos.length) {
     throw new ApiError(404, "Videos not found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, videos, "Videos fetched successfully"));
+});
+
+export const getAllVideos = asyncHandler(async (req, res) => {
+  const { limit = 10, page = 1 } = req.query;
+
+  const match = {
+    isPublic: true,
+  };
+
+  const videos = await Video.find(match)
+    .skip((page - 1) * parseInt(limit))
+    .limit(parseInt(limit))
+    .populate("owner", "_id firstName lastName userName")
+    .sort({ createdAt: -1 })
+    .lean();
+
+  if (!videos.length) {
+    return res.status(200).json(new ApiResponse(200, [], "No videos exists"));
   }
 
   return res
@@ -289,39 +345,43 @@ export const deleteVideo = asyncHandler(async (req, res) => {
 });
 
 export const toggleisPublicStatus = asyncHandler(async (req, res) => {
-    const {videoId} = req.params;
-    const userId = req.user?._id;
+  const { videoId } = req.params;
+  const userId = req.user?._id;
 
-    if(!videoId || !mongoose.Types.ObjectId.isValid(videoId)){
-        throw new ApiError(400, "Valid video ID is required")
-    }
+  if (!videoId || !mongoose.Types.ObjectId.isValid(videoId)) {
+    throw new ApiError(400, "Valid video ID is required");
+  }
 
-    const video = await Video.findOneAndUpdate(
-        {
-            _id: videoId,
-            owner: userId
+  const video = await Video.findOneAndUpdate(
+    {
+      _id: videoId,
+      owner: userId,
+    },
+    [
+      {
+        $set: {
+          isPublic: {
+            $not: "$isPublic",
+          },
         },
-        [
-            {
-                $set:{
-                    isPublic:{
-                        $not: "$isPublic"
-                    }
-                }
-            }
-        ],
-        {
-            new: true
-        }
-    );
-
-    if(!video){
-        throw new ApiError(404, "Video not found or unauthorized request")
+      },
+    ],
+    {
+      new: true,
     }
+  );
 
-    return res
+  if (!video) {
+    throw new ApiError(404, "Video not found or unauthorized request");
+  }
+
+  return res
     .status(200)
     .json(
-        new ApiResponse(200, {isPublic: video.isPublic}, "Video public status toggled successfully")
-    )
-})
+      new ApiResponse(
+        200,
+        { isPublic: video.isPublic },
+        "Video public status toggled successfully"
+      )
+    );
+});
