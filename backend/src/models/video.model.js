@@ -17,10 +17,12 @@ const videoSchema = new Schema({
     title: {
         type: String,
         required: true,
-        maxLength: 100
+        minLength: 2,
+        maxLength: 255
     },
     description: {
         type: String,
+        default: '',
         maxLength: 1000
     },
     duration: {

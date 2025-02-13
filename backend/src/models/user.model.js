@@ -6,12 +6,14 @@ const userSchema = new Schema({
     firstName: {
         type: String,
         required: true,
-        maxLength: 40
+        minLength: 2,
+        maxLength: 100,
     },
     lastName: {
         type: String,
         required: true,
-        maxLength: 40,
+        minLength: 2,
+        maxLength: 100,
     },
     email: {
         type: String,
@@ -22,7 +24,15 @@ const userSchema = new Schema({
                 return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v);
             },
             message: props => `${props.value} is not a valid email address!`
-        }
+        },
+        minLength: 2,
+        maxLength: 100,
+    },
+    userName: {
+        type: String,
+        required: [true, "Username is required"],
+        minLength: 2,
+        maxLength: 100,
     },
     channelName: {
         type: String,
@@ -41,6 +51,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Password is required"], 
         minLength: [10, "Password must be at least 10 characters long"],
+        maxLength: 255,
         validate: {
             validator: function (v) {
                 return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/.test(v);

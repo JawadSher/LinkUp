@@ -5,7 +5,7 @@ const playlistSchema = new Schema({
     playlistName: {
         type: String,
         required: [true, "Playlist name is required"],
-        maxLength: 30
+        maxLength: 255
     },
     playlistDescription: {
         type: String,
