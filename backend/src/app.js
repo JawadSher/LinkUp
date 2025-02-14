@@ -38,10 +38,12 @@ import authUserRouter from "./routes/authUser.router.js";
 import playlistRouter from "./routes/playlist.router.js";
 import videoRouter from "./routes/video.router.js";
 import userRouter from "./routes/user.router.js";
+import commentRouter from "./routes/comment.router.js";
 
 app.use("/api/v1/user/auth", authUserRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/playlists", playlistRouter);
 app.use("/api/v1/videos", videoRouter);
+app.use("/api/v1/video/comment", commentRouter);
 
 export { app };
