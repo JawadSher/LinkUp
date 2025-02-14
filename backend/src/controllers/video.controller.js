@@ -108,7 +108,7 @@ export const getSpecificChannelVideos = asyncHandler(async (req, res) => {
   const { limit = 10, page = 1, userId } = req.query;
 
   if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
-    throw new ApiError(400, "Valid user ID is required to get channel videos");
+    throw new ApiError(400, "User ID is required to get channel videos");
   }
 
   const match = {
@@ -187,7 +187,7 @@ export const getVideosBySearch = asyncHandler(async (req, res) => {
     ],
   };
 
-  const videos = Video.find(match)
+  const videos = await Video.find(match)
     .skip((page - 1) * limit)
     .limit(parseInt(limit))
     .populate("owner", "_id firstName lastName userName")
