@@ -14,12 +14,13 @@ import NavLinks from "./NavLinks";
 
 const Sidebar = ({ children }) => {
   const [sidebarGrow, setSidebarGrow] = useState(false);
+  const theme = localStorage.getItem('theme');
 
   return (
     <div
       className={` transition-all duration-300 ease-in-out ${
         sidebarGrow ? "w-[200px]" : " w-[80px]"
-      } max-h-full rounded-xl flex flex-col items-center justify-between overflow-clip`}
+      } max-h-full rounded-xl flex flex-col items-center justify-between overflow-clip ${theme === 'light' && 'border-[1px] border-gray-500'}`}
     >
       <div className=" flex flex-col overflow-x-clip items-start justify-between min-h-[150px] w-full">
         <Button
@@ -87,7 +88,7 @@ const Sidebar = ({ children }) => {
           )}
         </div>
       </div>
-      {sidebarGrow && <Separator className="mt-1 mb-1 w-[95%]" />}
+      {sidebarGrow && <Separator className={`mt-1 mb-1 w-[95%] ${theme === 'light' && 'bg-gray-800'}`} />}
       {sidebarGrow && (
         <div className="w-full h-fit flex flex-col  flex-grow">
           <h1 className="text-[17px] ml-2 font-semibold">Subscriptions</h1>

@@ -10,12 +10,11 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
-  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
 const Navbar = ({ user }) => {
-  const darkTheme = localStorage.getItem('theme');
+  const theme = localStorage.getItem('theme');
 
   return (
     <div className="m-3 w-full h-[70px] bg-gray-950 flex items-center justify-between px-5 rounded-xl">
@@ -26,25 +25,25 @@ const Navbar = ({ user }) => {
           </Button>
         </Link>
       </div>
-      <div className="min-w-[500px] min-h-9 rounded-full border-2 border-gray-500 flex items-center pr-2">
+      <div className="min-w-[40%] h-9 rounded-full border-2 border-gray-600 flex items-center pr-2 ">
         <Input
-          className="w-full h-full rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0 font-normal tracking-wide"
+          className="w-full  flex-grow rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0 tracking-wider mb-[3px] font-sans font-semibold"
           placeholder="Search here"
         />
         <Search
           color="#808080"
-          className="border-l-2 border-gray-500 pl-1 w-7 b"
+          className=" pl-1 w-7 b"
         />
       </div>
       <div className="flex items-center gap-5">
-        <Menubar className={`w-25 rounded-full ${darkTheme == 'light' && 'bg-gray-900'} border-none`}>
+        <Menubar className={`w-25 rounded-full ${theme == 'light' && 'bg-gray-900'} border-none`}>
           <MenubarMenu className="w-25">
             <MenubarTrigger className={`w-full h-full rounded-full data-[state=open]:bg-gray-500 `}>
-              <Plus color={darkTheme == 'light' ? "#ffffff" : "#ffffff"} />{" "}
+              <Plus color={theme == 'light' ? "#ffffff" : "#ffffff"} />{" "}
               <p className="ml-1 text-[16px] font-normal text-white">Create</p>
             </MenubarTrigger>
-            <MenubarContent className={darkTheme == 'light' && 'border-none bg-gray-500 text-white'}>
-              <MenubarItem className={`flex items-center justify-between ${darkTheme == 'light' && 'border-none'}`}>
+            <MenubarContent className={theme == 'light' && 'border-none bg-gray-500 text-white'}>
+              <MenubarItem className={`flex items-center justify-between ${theme == 'light' && 'border-none'}`}>
                 <Video color="#ffffff" className="w-[20px]" />
                 <p className=" min-w-24 font-normal">Upload video</p>
               </MenubarItem>
