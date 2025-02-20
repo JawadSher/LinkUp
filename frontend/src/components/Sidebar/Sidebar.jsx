@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import NavLinks from "./NavLinks";
 
 const Sidebar = ({ children }) => {
   const [sidebarGrow, setSidebarGrow] = useState(false);
@@ -29,74 +29,80 @@ const Sidebar = ({ children }) => {
           <Menu />
         </Button>
         <div className="w-full h-full flex flex-col items-center">
-          <Button
-            className={`w-[90%] mt-3 flex items-center ${
-              sidebarGrow ? "justify-between" : "justify-center"
-            }`}
-          >
-            <House />
-            {sidebarGrow ? <p className="mr-[60px]">Home</p> : null}
-          </Button>
-          <Button
-            className={`w-[90%] mt-1 flex items-center ${
-              sidebarGrow ? "justify-between" : "justify-center"
-            }`}
-          >
-            <Clapperboard />
-            {sidebarGrow ? <p className="mr-[60px]">Shorts</p> : null}
-          </Button>
-          <Button
-            className={`w-[90%] mt-1 flex items-center ${
-              sidebarGrow ? "justify-between" : "justify-center"
-            }`}
-          >
-            <History />
-            {sidebarGrow ? <p className="mr-[60px]">History</p> : null}
-          </Button>
-          <Button
-            className={`w-[90%] mt-1 flex items-center ${
-              sidebarGrow ? "justify-between" : "justify-center"
-            }`}
-          >
-            <ListVideo />
-            {sidebarGrow ? <p className="mr-[60px]">Playlists</p> : null}
-          </Button>
-          <Button
-            className={`w-[90%] mt-1 flex items-center ${
-              sidebarGrow ? "justify-between" : "justify-center"
-            }`}
-          >
-            <ThumbsUp />
-            {sidebarGrow ? <p className="mr-[60px]">Liked videos</p> : null}
-          </Button>
-          {!sidebarGrow ? (
-            <Button
-              className={`w-[90%] mt-1 flex items-center ${
-                sidebarGrow ? "justify-between" : "justify-center"
-              }`}
-            >
-              <TvMinimalPlay />
-            </Button>
-          ) : null}
+          <NavLinks
+            href={"/"}
+            icon={House}
+            label={sidebarGrow && "Home"}
+            bgColor="bg-gray-600"
+            bgHoverColor="hover:bg-gray-800"
+            textColor="text-gray-100"
+            textHoverColor="white"
+          />
+          <NavLinks
+            href={"/"}
+            icon={Clapperboard}
+            label={sidebarGrow && "Shorts"}
+            bgColor="bg-gray-600"
+            bgHoverColor="hover:bg-gray-800"
+            textColor="text-gray-100"
+            textHoverColor="white"
+          />
+          <NavLinks
+            href={"/"}
+            icon={History}
+            label={sidebarGrow && "History"}
+            bgColor="bg-gray-600"
+            bgHoverColor="hover:bg-gray-800"
+            textColor="text-gray-100"
+            textHoverColor="white"
+          />
+          <NavLinks
+            href={"/"}
+            icon={ListVideo}
+            label={sidebarGrow && "Playlists"}
+            bgColor="bg-gray-600"
+            bgHoverColor="hover:bg-gray-800"
+            textColor="text-gray-100"
+            textHoverColor="white"
+          />
+          <NavLinks
+            href={"/"}
+            icon={ThumbsUp}
+            label={sidebarGrow && "Liked videos"}
+            bgColor="bg-gray-600"
+            bgHoverColor="hover:bg-gray-800"
+            textColor="text-gray-100"
+            textHoverColor="white"
+          />
+          {!sidebarGrow && (
+            <NavLinks
+              href={"/"}
+              icon={TvMinimalPlay}
+              label=""
+              bgColor="bg-gray-600"
+              bgHoverColor="hover:bg-gray-800"
+              textColor="text-gray-100"
+              textHoverColor="white"
+            />
+          )}
         </div>
       </div>
-      {
-        sidebarGrow && <Separator className="mt-1 mb-1 w-[95%]" />
-      }
-      {
-        sidebarGrow && <div className="w-full h-fit flex-grow">
-        <h1 className="text-[20px]">Subscriptions</h1>
-        <div className="mt-3">
-          <Button className="flex items-center justify-between w-full ">
-            <Avatar className=" w-[40px]">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" className="w-[30ppx] h-[30px] rounded-2xl" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <h1 className=" w-full text-left pl-1">xyz channel</h1>
-          </Button>
+      {sidebarGrow && <Separator className="mt-1 mb-1 w-[95%]" />}
+      {sidebarGrow && (
+        <div className="w-full h-fit flex flex-col  flex-grow">
+          <h1 className="text-[17px] ml-2 font-semibold">Subscriptions</h1>
+          <div className="">
+            <NavLinks
+              avatarURL={"https://github.com/shadcn.png"}
+              label={"channel"}
+              bgColor="bg-gray-600"
+              bgHoverColor="hover:bg-gray-800"
+              textColor="text-gray-100"
+              textHoverColor="white"
+            />
+          </div>
         </div>
-      </div>
-      }
+      )}
       <Separator className="mt-1 mb-1 w-[95%]" />
       <div className="bg-gray-400 w-full h-[150px] text-[14px] flex">
         Footer

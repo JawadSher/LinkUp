@@ -10,11 +10,12 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarSeparator,
+  MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar";
 
 const Navbar = ({ user }) => {
-  const darkTheme = localStorage.getItem("theme");
+  const darkTheme = localStorage.getItem('theme');
 
   return (
     <div className="m-3 w-full h-[70px] bg-gray-950 flex items-center justify-between px-5 rounded-xl">
@@ -36,14 +37,14 @@ const Navbar = ({ user }) => {
         />
       </div>
       <div className="flex items-center gap-5">
-        <Menubar className="w-25 rounded-full">
-          <MenubarMenu className="w-25 ">
-            <MenubarTrigger className={`w-full h-full rounded-full ${darkTheme === 'light' ? "bg-black hover:bg-gray-600" : null}`}>
-              <Plus color="#ffffff" />{" "}
-              <p className="ml-1 text-[16px] font-normal">Create</p>
+        <Menubar className={`w-25 rounded-full ${darkTheme == 'light' && 'bg-gray-900'} border-none`}>
+          <MenubarMenu className="w-25">
+            <MenubarTrigger className={`w-full h-full rounded-full data-[state=open]:bg-gray-500 `}>
+              <Plus color={darkTheme == 'light' ? "#ffffff" : "#ffffff"} />{" "}
+              <p className="ml-1 text-[16px] font-normal text-white">Create</p>
             </MenubarTrigger>
-            <MenubarContent className="">
-              <MenubarItem className="flex items-center justify-between">
+            <MenubarContent className={darkTheme == 'light' && 'border-none bg-gray-500 text-white'}>
+              <MenubarItem className={`flex items-center justify-between ${darkTheme == 'light' && 'border-none'}`}>
                 <Video color="#ffffff" className="w-[20px]" />
                 <p className=" min-w-24 font-normal">Upload video</p>
               </MenubarItem>
@@ -56,7 +57,7 @@ const Navbar = ({ user }) => {
           </MenubarMenu>
         </Menubar>
 
-        <Bell color="#ffffff" className="cursor-pointer hover:fill-red-700"/>
+        <Bell color="#ffffff" className="cursor-pointer hover:fill-red-700" />
         {user?.statusCode === 200 ? (
           <Profile user={user} />
         ) : (
