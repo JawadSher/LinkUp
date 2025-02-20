@@ -17,10 +17,8 @@ const App = () => {
       <Navbar user={user} />
       
       <div className=" w-full flex-grow flex pb-2">
-        <div className="bg-blue-700 w-[10%] flex-grow rounded-xl flex items-center justify-center">
           <Sidebar />
-        </div>
-        <dev className="w-[90%] flex items-center justify-center bg-gray-400 ml-2 rounded-xl">
+        <dev className="w-[90%] flex items-center justify-center flex-grow bg-gray-400 ml-2 rounded-xl">
           main Area
         </dev>
       </div>

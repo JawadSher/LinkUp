@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/menubar";
 
 const Navbar = ({ user }) => {
+  const darkTheme = localStorage.getItem("theme");
+
   return (
     <div className="m-3 w-full h-[70px] bg-gray-950 flex items-center justify-between px-5 rounded-xl">
       <div className="flex items-center justify-center">
@@ -36,7 +38,7 @@ const Navbar = ({ user }) => {
       <div className="flex items-center gap-5">
         <Menubar className="w-25 rounded-full">
           <MenubarMenu className="w-25 ">
-            <MenubarTrigger className="w-full h-full rounded-full">
+            <MenubarTrigger className={`w-full h-full rounded-full ${darkTheme === 'light' ? "bg-black hover:bg-gray-600" : null}`}>
               <Plus color="#ffffff" />{" "}
               <p className="ml-1 text-[16px] font-normal">Create</p>
             </MenubarTrigger>
