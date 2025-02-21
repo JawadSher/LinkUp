@@ -10,7 +10,7 @@ import "./profile.css";
 import { useDispatch } from "react-redux";
 import { logout } from "@/features/auth/authSlice.js";
 
-const Profile = ({ user }) => {
+const Profile = ({ user, screen }) => {
     const dispatch = useDispatch();
     
     const handleLogoutUser =  () => {
@@ -21,9 +21,9 @@ const Profile = ({ user }) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger asChild >
         <div className="flex flex-col items-center justify-center cursor-pointer">
-          <Avatar>
+          <Avatar className={screen === 'mobile' && 'w-8 h-8'}>
             <AvatarImage src={`${user?.data?.Avatar || "https://github.com/shadcn.png"}`} alt="Profile" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
