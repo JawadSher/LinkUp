@@ -12,10 +12,11 @@ import {
   MenubarSeparator,
   MenubarTrigger,
 } from "@/components/ui/menubar";
+import { ModeToggle } from "../dark-mode/ModeToggle";
+import { useSelector } from "react-redux";
 
 const Navbar = ({ user }) => {
-  const theme = localStorage.getItem('theme');
-
+  const screen = useSelector((state) => state.screen.screenType);
   return (
     <div className="m-3 w-full h-[70px] bg-gray-950 flex items-center justify-between px-5 rounded-xl">
       <div className="flex items-center justify-center">
@@ -25,32 +26,35 @@ const Navbar = ({ user }) => {
           </Button>
         </Link>
       </div>
-      <div className="min-w-[40%] h-9 rounded-full border-2 border-gray-600 flex items-center pr-2 ">
-        <Input
-          className="w-full  flex-grow rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0 tracking-wider mb-[3px] font-sans font-semibold"
+      <div className="lg:min-w-[40%] sm:min-w-[20%] md:min-w-[20%] xxsm:min-w-[5%] xxsm:w-[20%] xxxsm:justify-center mr-2 h-9 rounded-full border-2 border-gray-600 flex items-center pr-2">
+        {
+          screen === 'mobile' ? null : <Input
+          className="w-full flex-grow rounded-full mr-2 border-0 focus-visible:ring-0 focus:outline-none focus:border-0 tracking-wider mb-[3px] font-sans font-semibold"
           placeholder="Search here"
         />
+        }
         <Search
           color="#808080"
-          className=" pl-1 w-7 b"
+          className="pl-1 w-7"
         />
       </div>
       <div className="flex items-center gap-5">
-        <Menubar className={`w-25 rounded-full ${theme == 'light' && 'bg-gray-900'} border-none`}>
-          <MenubarMenu className="w-25">
-            <MenubarTrigger className={`w-full h-full rounded-full data-[state=open]:bg-gray-500 `}>
-              <Plus color={theme == 'light' ? "#ffffff" : "#ffffff"} />{" "}
-              <p className="ml-1 text-[16px] font-normal text-white">Create</p>
+        <ModeToggle />
+        <Menubar className="w-25 rounded-full border-none sm:hidden xxxsm:hidden md:block">
+          <MenubarMenu>
+            <MenubarTrigger className={`w-full h-full rounded-full data-[state=open]:bg-gray-500 ${localStorage.getItem('vite-ui-theme') === 'light' && 'bg-black outline-none'}`}>
+              <Plus color="#ffffff" />
+              <p className="ml-1 text-[16px] font-normal">Create</p>
             </MenubarTrigger>
-            <MenubarContent className={theme == 'light' && 'border-none bg-gray-500 text-white'}>
-              <MenubarItem className={`flex items-center justify-between ${theme == 'light' && 'border-none'}`}>
+            <MenubarContent>
+              <MenubarItem className="flex items-center justify-between">
                 <Video color="#ffffff" className="w-[20px]" />
-                <p className=" min-w-24 font-normal">Upload video</p>
+                <p className="min-w-24 font-normal">Upload video</p>
               </MenubarItem>
               <MenubarSeparator />
               <MenubarItem className="flex items-center justify-between">
                 <File color="#ffffff" className="w-[20px]" />
-                <p className=" min-w-24 font-normal">Create post</p>
+                <p className="min-w-24 font-normal">Create post</p>
               </MenubarItem>
             </MenubarContent>
           </MenubarMenu>
@@ -61,7 +65,6 @@ const Navbar = ({ user }) => {
           <Profile user={user} />
         ) : (
           <Link to="/api/v1/user/auth/">
-            {" "}
             <Button
               className="flex items-center justify-center hover:bg-slate-600"
               mode="login"

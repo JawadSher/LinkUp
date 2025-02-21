@@ -11,22 +11,24 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Separator } from "@/components/ui/separator";
 import NavLinks from "./NavLinks";
+import { useSelector } from "react-redux";
 
-const Sidebar = ({ children }) => {
+const Sidebar = () => {
   const [sidebarGrow, setSidebarGrow] = useState(false);
-  const theme = localStorage.getItem('theme');
+  const theme = localStorage.getItem("vite-ui-theme");
+  const screenType = useSelector((state) => state.screen.screenType)
 
+  if(screenType === 'mobile' || screenType === 'tablet') return null;
   return (
     <div
-      className={` transition-all duration-300 ease-in-out ${
-        sidebarGrow ? "w-[200px]" : " w-[80px]"
-      } max-h-full rounded-xl flex flex-col items-center justify-between overflow-clip ${theme === 'light' && 'border-[1px] border-gray-500'}`}
+      className={`transition-all duration-300 ease-in-out ${
+        sidebarGrow ? "w-[200px]" : "w-[80px]"
+      } max-h-full rounded-xl flex flex-col items-center justify-between overflow-clip ${
+        theme === "light" && "border-[1px] border-gray-500"
+      }`}
     >
-      <div className=" flex flex-col overflow-x-clip items-start justify-between min-h-[150px] w-full">
-        <Button
-          className={`w-full rounded-bl-none rounded-br-none`}
-          onClick={() => setSidebarGrow((prev) => !prev)}
-        >
+      <div className="flex flex-col overflow-x-clip items-start justify-between min-h-[150px] w-full">
+        <Button className="w-full rounded-bl-none rounded-br-none" onClick={() => setSidebarGrow((prev) => !prev)}>
           <Menu />
         </Button>
         <div className="w-full h-full flex flex-col items-center">
@@ -88,11 +90,11 @@ const Sidebar = ({ children }) => {
           )}
         </div>
       </div>
-      {sidebarGrow && <Separator className={`mt-1 mb-1 w-[95%] ${theme === 'light' && 'bg-gray-800'}`} />}
+      {sidebarGrow && <Separator className={`mt-1 mb-1 w-[95%] ${theme === "light" && "bg-gray-800"}`} />}
       {sidebarGrow && (
-        <div className="w-full h-fit flex flex-col  flex-grow">
+        <div className="w-full h-fit flex flex-col flex-grow">
           <h1 className="text-[17px] ml-2 font-semibold">Subscriptions</h1>
-          <div className="">
+          <div>
             <NavLinks
               avatarURL={"https://github.com/shadcn.png"}
               label={"channel"}
@@ -105,9 +107,7 @@ const Sidebar = ({ children }) => {
         </div>
       )}
       <Separator className="mt-1 mb-1 w-[95%]" />
-      <div className="bg-gray-400 w-full h-[150px] text-[14px] flex">
-        Footer
-      </div>
+      <div className="bg-gray-400 w-full h-[150px] text-[14px] flex">Footer</div>
     </div>
   );
 };
