@@ -53,6 +53,7 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     await API.post("/user/auth/logout");
     API.interceptors.response.handlers = [];
     localStorage.clear();
+    window.location.href = "/login"
     return null;
   } catch (error) {
     return thunkAPI.rejectWithValue(

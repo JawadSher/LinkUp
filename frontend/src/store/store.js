@@ -4,6 +4,7 @@ import screenReducer from "../features/preferences/screenSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "redux";
+import apiSlice from "../api/apiSlice";
 
 const persistConfig = {
   key: "root",
@@ -12,6 +13,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  [apiSlice.reducerPath]: apiSlice.reducer,
   screen: screenReducer,
 });
 
@@ -22,7 +24,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(apiSlice.middleware)
 });
 
 const persistor = persistStore(store);
